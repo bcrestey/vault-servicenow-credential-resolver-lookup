@@ -67,6 +67,14 @@ public class CredentialResolver {
 
         String id = (String) args.get(ARG_ID);
 
+        // Added by benoit.crestey@servicenow.com
+		// If identifier contains <ip>, we replace <ip> by the target IP to discover
+		if (id.contains("<ip>")) {
+			id = id.replace("<ip>", ip);
+			System.err.println("lookup on IP detected : " + id);
+		}
+		System.err.println("search id: " + id);
+        
         String body = send(new HttpGet(vaultAddress + "/v1/" + id), vaultCA, tlsSkipVerify);
         System.err.println("Successfully queried Vault for credential id: "+id);
 
